@@ -25,4 +25,4 @@ A comprehensive Human Resource Management system built with Django, featuring em
 
 1. Clone the repository
 ```bash
-git clone <your-repository-url>
+git clone <https://github.com/Atik1000/HRM-Django>
