@@ -1,0 +1,28 @@
+.icon-shape {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(145deg, #4e73df 0%, #224abe 100%);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(145deg, #1cc88a 0%, #13855c 100%);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(145deg, #36b9cc 0%, #258391 100%);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(145deg, #f6c23e 0%, #dda20a 100%);
+}
+
+.text-white {
+    color: #fff !important;
+}

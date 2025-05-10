@@ -1,0 +1,19 @@
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #4e73df;
+    color: white;
+    padding: 1.5rem;
+}
+
+.btn-primary {
+    background-color: #4e73df;
+    border-color: #4e73df;
+}
+
+.btn-primary:hover {
+    background-color: #224abe;
+    border-color: #224abe;
+}
