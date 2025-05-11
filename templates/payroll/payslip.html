@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Payment Slip{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6>Payment Slip - {{ payroll.month }}/{{ payroll.year }}</h6>
+                        <button onclick="window.print()" class="btn btn-primary btn-sm">Print Slip</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="mb-3">Employee Details</h6>
+                            <p class="mb-1"><strong>Name:</strong> {{ payroll.employee.user.get_full_name }}</p>
+                            <p class="mb-1"><strong>ID:</strong> {{ payroll.employee.employee_id }}</p>
+                            <p class="mb-1"><strong>Department:</strong> {{ payroll.employee.department }}</p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <h6 class="mb-3">Payment Details</h6>
+                            <p class="mb-1"><strong>Payment Date:</strong> {{ payroll.created_at|date }}</p>
+                            <p class="mb-1"><strong>Payment Method:</strong> Bank Transfer</p>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Basic Salary</td>
+                                    <td class="text-end">${{ payroll.basic_salary }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Allowances</td>
+                                    <td class="text-end">${{ payroll.allowances }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Overtime ({{ payroll.overtime_hours }} hours)</td>
+                                    <td class="text-end">${{ payroll.overtime_pay }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Deductions</td>
+                                    <td class="text-end">-${{ payroll.total_deductions }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Net Salary</strong></td>
+                                    <td class="text-end"><strong>${{ payroll.net_salary }}</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

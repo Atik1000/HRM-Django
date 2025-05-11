@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Payroll Report{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6>Payroll Report - {{ month }}/{{ year }}</h6>
+                        <button onclick="window.print()" class="btn btn-primary btn-sm">Print Report</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="text-sm mb-0">Total Employees</h6>
+                                    <p class="text-lg mb-0">{{ total_employees }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="text-sm mb-0">Total Basic Salary</h6>
+                                    <p class="text-lg mb-0">${{ total_basic }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="text-sm mb-0">Total Overtime</h6>
+                                    <p class="text-lg mb-0">${{ total_overtime }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="text-sm mb-0">Total Net Salary</h6>
+                                    <p class="text-lg mb-0">${{ total_net }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Basic Salary</th>
+                                    <th>Allowances</th>
+                                    <th>Overtime</th>
+                                    <th>Deductions</th>
+                                    <th>Net Salary</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for payroll in payrolls %}
+                                <tr>
+                                    <td>{{ payroll.employee.user.get_full_name }}</td>
+                                    <td>${{ payroll.basic_salary }}</td>
+                                    <td>${{ payroll.allowances }}</td>
+                                    <td>${{ payroll.overtime_pay }}</td>
+                                    <td>${{ payroll.total_deductions }}</td>
+                                    <td>${{ payroll.net_salary }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
