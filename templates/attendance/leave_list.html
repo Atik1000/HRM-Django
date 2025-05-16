@@ -16,10 +16,13 @@
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
-                                    <th>Employee</th>
+                                    {% if request.user.role in 'admin,hr' %}
+                                        <th>Employee</th>
+                                    {% endif %}
                                     <th>Leave Type</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
+                                    <th>Days</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -27,19 +30,22 @@
                             <tbody>
                                 {% for leave in leaves %}
                                 <tr>
-                                    <td>{{ leave.employee.user.get_full_name }}</td>
+                                    {% if request.user.role in 'admin,hr' %}
+                                        <td>{{ leave.employee.full_name }}</td>
+                                    {% endif %}
                                     <td>{{ leave.get_leave_type_display }}</td>
                                     <td>{{ leave.start_date }}</td>
                                     <td>{{ leave.end_date }}</td>
+                                    <td>{{ leave.duration_days }}</td>
                                     <td>
                                         <span class="badge bg-{{ leave.status }}">
                                             {{ leave.get_status_display }}
                                         </span>
                                     </td>
                                     <td>
-                                        {% if user.employee.role in 'hr,manager' and leave.status == 'pending' %}
-                                        <a href="#" class="btn btn-success btn-sm">Approve</a>
-                                        <a href="#" class="btn btn-danger btn-sm">Reject</a>
+                                        {% if request.user.role in 'admin,hr,manager' and leave.status == 'pending' %}
+                                            <a href="{% url 'attendance:leave_approval' leave.pk %}" 
+                                               class="btn btn-info btn-sm">Review</a>
                                         {% endif %}
                                     </td>
                                 </tr>

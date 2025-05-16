@@ -6,7 +6,7 @@ from .forms import EmployeeForm
 
 @login_required
 def employee_list(request):
-    employees = Employee.objects.select_related('user', 'department').all()
+    employees = Employee.objects.select_related('user', 'user__department').all()
     return render(request, 'employees/employee_list.html', {'employees': employees})
 
 @login_required

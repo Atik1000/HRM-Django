@@ -1,0 +1,144 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Attendance Reports{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Monthly Attendance Overview</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="monthlyAttendanceChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Monthly Statistics</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Present</th>
+                                    <th>Late</th>
+                                    <th>Absent</th>
+                                    <th>Avg Hours</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for stat in monthly_stats %}
+                                <tr>
+                                    <td>{{ stat.month|date:"F" }}</td>
+                                    <td>{{ stat.present_days }}</td>
+                                    <td>{{ stat.late_days }}</td>
+                                    <td>{{ stat.absent_days }}</td>
+                                    <td>{{ stat.avg_hours|floatformat:1 }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Leave Statistics</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Leave Type</th>
+                                    <th>Total Requests</th>
+                                    <th>Approved</th>
+                                    <th>Success Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for stat in leave_stats %}
+                                <tr>
+                                    <td>{{ stat.get_leave_type_display }}</td>
+                                    <td>{{ stat.total_requests }}</td>
+                                    <td>{{ stat.approved_requests }}</td>
+                                    <td>
+                                        {{ stat.approved_requests|div:stat.total_requests|multiply:100|floatformat }}%
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chartData = {
+            labels: JSON.parse('{{ monthly_stats_labels|safe }}'),
+            presentDays: JSON.parse('{{ present_days_data|safe }}'),
+            lateDays: JSON.parse('{{ late_days_data|safe }}')
+        };
+
+        const ctx = document.getElementById('monthlyAttendanceChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartData.labels,
+                datasets: [
+                    {
+                        label: 'Present Days',
+                        data: chartData.presentDays,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Late Days',
+                        data: chartData.lateDays,
+                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

@@ -4,8 +4,8 @@
 
 {% block content %}
 <div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-12">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header pb-0">
                     <h6>Request Leave</h6>
@@ -16,23 +16,25 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="{{ form.leave_type.id_for_label }}">Leave Type</label>
+                                    <label>Leave Type</label>
                                     {{ form.leave_type }}
                                 </div>
+                            </div>
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="{{ form.start_date.id_for_label }}">Start Date</label>
+                                    <label>Start Date</label>
                                     {{ form.start_date }}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="{{ form.end_date.id_for_label }}">End Date</label>
+                                    <label>End Date</label>
                                     {{ form.end_date }}
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="{{ form.reason.id_for_label }}">Reason</label>
+                                    <label>Reason</label>
                                     {{ form.reason }}
                                 </div>
                             </div>

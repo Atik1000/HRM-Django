@@ -9,8 +9,8 @@ from recruitment.models import JobPosting
 @login_required
 def dashboard(request):
     context = {
-        'total_employees': Employee.objects.count(),
-        'present_today': Attendance.objects.filter(status='present').count(),
+        'total_employees': request.user.employee_set.count() if request.user.role in ['admin', 'hr'] else 0,
+        'pending_leaves': Leave.objects.filter(status='pending').count() if request.user.role in ['admin', 'hr', 'manager'] else 0,
         'active_jobs': JobPosting.objects.filter(status='published').count(),
     }
     return render(request, 'core/dashboard.html', context)

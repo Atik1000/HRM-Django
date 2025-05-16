@@ -1,0 +1,96 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Application Details{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                    <h6>Application Details</h6>
+                    <div>
+                        <a href="{% url 'recruitment:schedule_interview' application.pk %}" class="btn btn-primary btn-sm">Schedule Interview</a>
+                        <a href="{% url 'recruitment:application_list' %}" class="btn btn-secondary btn-sm">Back to List</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-uppercase text-sm">Applicant Information</h6>
+                            <p><strong>Name:</strong> {{ application.applicant_name }}</p>
+                            <p><strong>Email:</strong> {{ application.email }}</p>
+                            <p><strong>Phone:</strong> {{ application.phone }}</p>
+                            <p><strong>Applied For:</strong> {{ application.job.title }}</p>
+                            <p><strong>Status:</strong> {{ application.get_status_display }}</p>
+                            <p><strong>Applied Date:</strong> {{ application.applied_at|date }}</p>
+                        </div>
+                        <!-- Add this inside the card-body div, before the documents section -->
+                        <div class="col-md-6">
+                            <form method="post" action="{% url 'recruitment:update_status' application.pk %}" class="mb-4">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label>Update Application Status</label>
+                                    <select name="status" class="form-control" onchange="this.form.submit()">
+                                        {% for status, label in application.STATUS_CHOICES %}
+                                            <option value="{{ status }}" {% if application.status == status %}selected{% endif %}>
+                                                {{ label }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-uppercase text-sm">Documents</h6>
+                            <p><strong>Resume:</strong> 
+                                <a href="{{ application.resume.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    Download Resume
+                                </a>
+                            </p>
+                            <h6 class="text-uppercase text-sm mt-4">Cover Letter</h6>
+                            <p>{{ application.cover_letter|linebreaks }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header pb-0">
+                    <h6>Interview Schedule</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Date & Time</th>
+                                    <th>Interviewer</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for interview in interviews %}
+                                <tr>
+                                    <td>{{ interview.date_time }}</td>
+                                    <td>{{ interview.interviewer.get_full_name }}</td>
+                                    <td>{{ interview.location }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ interview.status }}">
+                                            {{ interview.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ interview.notes|truncatewords:20 }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ job.title }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6>Job Details</h6>
+                        <div>
+                            <a href="{% url 'recruitment:job_list' %}" class="btn btn-secondary btn-sm">Back to List</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5 class="mb-3">{{ job.title }}</h5>
+                            <p><strong>Department:</strong> {{ job.department.name }}</p>
+                            <p><strong>Salary Range:</strong> {{ job.salary_range }}</p>
+                            <p><strong>Status:</strong> {{ job.get_status_display }}</p>
+                            <p><strong>Closing Date:</strong> {{ job.closing_date }}</p>
+                            
+                            <h6 class="mt-4">Description</h6>
+                            <p>{{ job.description|linebreaks }}</p>
+                            
+                            <h6 class="mt-4">Requirements</h6>
+                            <p>{{ job.requirements|linebreaks }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header pb-0">
+                    <h6>Applications ({{ applications.count }})</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Applicant</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Applied Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for application in applications %}
+                                <tr>
+                                    <td>{{ application.applicant_name }}</td>
+                                    <td>{{ application.email }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ application.status }}">
+                                            {{ application.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ application.applied_at|date }}</td>
+                                    <td>
+                                        <a href="{% url 'recruitment:application_detail' application.pk %}" 
+                                           class="btn btn-info btn-sm">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

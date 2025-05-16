@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Job Applications{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>All Applications</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Applicant</th>
+                                    <th>Position</th>
+                                    <th>Department</th>
+                                    <th>Status</th>
+                                    <th>Applied Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for application in applications %}
+                                <tr>
+                                    <td>{{ application.applicant_name }}</td>
+                                    <td>{{ application.job.title }}</td>
+                                    <td>{{ application.job.department.name }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ application.status }}">
+                                            {{ application.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ application.applied_at|date }}</td>
+                                    <td>
+                                        <a href="{% url 'recruitment:application_detail' application.pk %}" class="btn btn-info btn-sm">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

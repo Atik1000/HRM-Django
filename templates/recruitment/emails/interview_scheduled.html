@@ -1,0 +1,22 @@
+{% extends 'mail_templated/base.tpl' %}
+
+{% block subject %}
+Interview Scheduled - {{ interview.application.job.title }}
+{% endblock %}
+
+{% block body %}
+Dear {{ interview.application.applicant_name }},
+
+Your interview for the position of {{ interview.application.job.title }} has been scheduled.
+
+Interview Details:
+- Date: {{ interview.date_time|date }}
+- Time: {{ interview.date_time|time }}
+- Location: {{ interview.location }}
+- Interviewer: {{ interview.interviewer.get_full_name }}
+
+Please arrive 10 minutes before the scheduled time.
+
+Best regards,
+HR Team
+{% endblock %}
